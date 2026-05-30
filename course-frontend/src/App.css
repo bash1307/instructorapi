@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  background-color: #111217;
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  text-align: center;
+  color: white;
+  padding-top: 40px;
+}
+
+h1 {
+  font-size: 56px;
+  margin-bottom: 10px;
+}
+
+.app > p {
+  color: #888;
+  font-size: 20px;
+}
+
+.course-card {
+  background-color: white;
+  color: #999;
+  width: 420px;
+  margin: 15px auto;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.course-card h2 {
+  color: #4f63d8;
+  margin: 0 0 15px;
+}
+
+.course-card p {
+  margin: 6px 0;
+  font-size: 20px;
+}
