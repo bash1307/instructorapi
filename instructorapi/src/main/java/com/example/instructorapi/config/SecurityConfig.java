@@ -43,7 +43,7 @@ public class SecurityConfig {
 
         return http.build();
     }
-
+  //test
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
