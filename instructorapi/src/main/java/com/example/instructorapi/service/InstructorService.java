@@ -24,7 +24,10 @@ public class InstructorService {
         this.instructorRepository = instructorRepository;
     }
 
-    // GET ALL + FILTER + PAGINATION + SORTING
+    public List<Instructor> getAllInstructors() {
+        return instructorRepository.findAll();
+    }
+
     public Page<Instructor> getInstructors(String specialization, Pageable pageable) {
 
         logger.info("Instructor query called");
@@ -41,28 +44,22 @@ public class InstructorService {
         return instructorRepository.findAll(pageable);
     }
 
-    // GET BY ID
     public Optional<Instructor> getInstructorById(String id) {
         return instructorRepository.findById(id);
     }
 
-    // CREATE
     public Instructor addInstructor(Instructor instructor) {
         return instructorRepository.save(instructor);
     }
 
-    // UPDATE
     public Instructor updateInstructor(String id, Instructor updatedInstructor) {
         updatedInstructor.setId(id);
         return instructorRepository.save(updatedInstructor);
     }
 
-    // DELETE
     public void deleteInstructor(String id) {
         instructorRepository.deleteById(id);
     }
-
-    // SEARCH BY NAME
     public List<Instructor> searchInstructorsByName(String keyword) {
 
         logger.info("Instructor search called");

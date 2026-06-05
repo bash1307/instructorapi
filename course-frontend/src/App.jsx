@@ -1,40 +1,40 @@
+import { useState } from "react";
 import "./App.css";
+import InstructorList from "./components/InstructorList";
 
 function App() {
-  const courses = [
+
+  const [instructors, setInstructors] = useState([
     {
-      title: "Java Basics",
-      category: "Programming",
-      duration: 3,
-      status: "Published",
+      id: "1",
+      name: "Alice Tan",
+      specialization: "Java",
+      status: "ACTIVE",
+      yearsOfExperience: 5,
     },
     {
-      title: "Spring Boot Basics",
-      category: "Backend",
-      duration: 5,
-      status: "Published",
+      id: "2",
+      name: "Ali",
+      specialization: "Backend",
+      status: "ACTIVE",
+      yearsOfExperience: 4,
     },
     {
-      title: "React Fundamentals",
-      category: "Frontend",
-      duration: 4,
-      status: "Published",
+      id: "3",
+      name: "Abu",
+      specialization: "Frontend",
+      status: "ACTIVE",
+      yearsOfExperience: 2,
     },
-  ];
+  ]);
 
   return (
     <div className="app">
-      <h1>Course Frontend</h1>
-      <p>This is our first React screen.</p>
+      <h1>Instructor Frontend</h1>
 
-      {courses.map((course, index) => (
-        <div className="course-card" key={index}>
-          <h2>{course.title}</h2>
-          <p>Category: {course.category}</p>
-          <p>Duration: {course.duration} hours</p>
-          <p>Status: {course.status}</p>
-        </div>
-      ))}
+      <h2>Total instructors: {instructors.length}</h2>
+
+      <InstructorList instructors={instructors} />
     </div>
   );
 }
