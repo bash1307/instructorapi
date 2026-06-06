@@ -39,12 +39,13 @@ public class InstructorController {
     @PostMapping("/instructors")
     public Instructor createInstructor(@Valid @RequestBody CreateInstructorRequest request) {
 
-        Instructor newInstructor = new Instructor(
-                request.getName(),
-                request.getEmail(),
-                request.getSpecialization(),
-                request.getYearsExperience()
-        );
+     Instructor newInstructor = new Instructor(
+        request.getName(),
+        request.getEmail(),
+        request.getSpecialization(),
+        request.getYearsExperience(),
+        request.getStatus()
+    );
 
         return instructorService.addInstructor(newInstructor);
     }

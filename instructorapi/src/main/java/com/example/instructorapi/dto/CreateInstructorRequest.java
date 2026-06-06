@@ -19,13 +19,21 @@ public class CreateInstructorRequest {
     @Min(value = 0, message = "Years experience must be 0 or more")
     private int yearsExperience;
 
-    // Keep your Getters and Setters exactly as they were
+    @NotBlank(message = "Status is required")
+    private String status;
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
     public String getSpecialization() { return specialization; }
     public void setSpecialization(String specialization) { this.specialization = specialization; }
+
     public int getYearsExperience() { return yearsExperience; }
     public void setYearsExperience(int yearsExperience) { this.yearsExperience = yearsExperience; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

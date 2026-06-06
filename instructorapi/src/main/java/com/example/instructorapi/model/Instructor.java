@@ -1,8 +1,8 @@
 package com.example.instructorapi.model;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "instructors")
 public class Instructor {
@@ -15,16 +15,26 @@ public class Instructor {
 
     @Indexed
     private String specialization;
+
     private int yearsExperience;
+
+    private String status;
 
     public Instructor() {
     }
 
-    public Instructor(String name, String email, String specialization, int yearsExperience) {
+    public Instructor(
+            String name,
+            String email,
+            String specialization,
+            int yearsExperience,
+            String status
+    ) {
         this.name = name;
         this.email = email;
         this.specialization = specialization;
         this.yearsExperience = yearsExperience;
+        this.status = status;
     }
 
     public String getId() {
@@ -66,5 +76,12 @@ public class Instructor {
     public void setYearsExperience(int yearsExperience) {
         this.yearsExperience = yearsExperience;
     }
-    
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
