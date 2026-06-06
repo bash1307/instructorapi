@@ -1,13 +1,18 @@
+import { Link } from "react-router-dom";
 import InstructorCard from "./InstructorCard";
 
-function InstructorList({ instructors }) {
+function InstructorList({ instructors, onSelectInstructor }) {
   return (
-    <div>
+    <div className="instructor-grid">
       {instructors.map((instructor) => (
-        <InstructorCard
+        <Link
           key={instructor.id}
-          instructor={instructor}
-        />
+          to={`/instructors/${instructor.id}`}
+          className="instructor-card-link"
+          onClick={() => onSelectInstructor && onSelectInstructor(instructor)}
+        >
+          <InstructorCard instructor={instructor} />
+        </Link>
       ))}
     </div>
   );
