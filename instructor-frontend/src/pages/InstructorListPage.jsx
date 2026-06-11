@@ -1,42 +1,120 @@
 import React, { useEffect, useState } from "react";
-import InstructorList from "../components/InstructorList";
-import { getAllInstructors } from "../services/instructorApi";
+import { Link } from "react-router-dom";
+
+import InstructorCard from "../components/InstructorCard";
+import SearchBox from "../components/SearchBox";
+import Pagination from "../components/Pagination";
+
+import {
+  getAllInstructors,
+  deleteInstructor,
+} from "../services/instructorApi";
 
 function InstructorListPage() {
   const [instructors, setInstructors] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortOption, setSortOption] = useState("name-asc");
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+
+  const isAdmin = localStorage.getItem("role") === "ADMIN";
 
   useEffect(() => {
     async function loadInstructors() {
       try {
+        setLoading(true);
+        setError("");
+
         const data = await getAllInstructors();
         setInstructors(data.content || []);
       } catch (err) {
         console.error(err);
-        setError("Failed to load instructors");
+        setError("Could not load instructors.");
+      } finally {
+        setLoading(false);
       }
     }
 
     loadInstructors();
   }, []);
 
-  const filteredInstructors = instructors.filter((instructor) =>
-    instructor.name?.toLowerCase().includes(searchTerm.toLowerCase())
+  function handleSearchChange(value) {
+    setSearchTerm(value);
+    setCurrentPage(1);
+  }
+
+  function handlePageSizeChange(value) {
+    setPageSize(value);
+    setCurrentPage(1);
+  }
+
+  async function handleDeleteInstructor(instructor) {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete ${instructor.name}?`
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      setError("");
+      setSuccessMessage("");
+
+      await deleteInstructor(instructor.id);
+
+      const updatedInstructors = instructors.filter(
+        (item) => item.id !== instructor.id
+      );
+
+      setInstructors(updatedInstructors);
+      setSuccessMessage("Instructor deleted successfully.");
+    } catch (err) {
+      console.error(err);
+      setError("Failed to delete instructor.");
+    }
+  }
+
+  const normalizedSearchTerm = searchTerm.toLowerCase();
+
+  const filteredInstructors = instructors.filter((instructor) => {
+    const name = instructor.name?.toLowerCase() || "";
+    const email = instructor.email?.toLowerCase() || "";
+    const specialization = instructor.specialization?.toLowerCase() || "";
+    const status = instructor.status === "ACTIVE" ? "active" : "inactive";
+
+    return (
+      name.includes(normalizedSearchTerm) ||
+      email.includes(normalizedSearchTerm) ||
+      specialization.includes(normalizedSearchTerm) ||
+      status.includes(normalizedSearchTerm)
+    );
+  });
+
+  const totalPages = Math.ceil(filteredInstructors.length / pageSize) || 1;
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedInstructors = filteredInstructors.slice(
+    startIndex,
+    endIndex
   );
 
-  const sortedInstructors = [...filteredInstructors].sort((a, b) => {
-    const expA = a.yearsExperience ?? a.yearsOfExperience ?? 0;
-    const expB = b.yearsExperience ?? b.yearsOfExperience ?? 0;
-
-    if (sortOption === "name-asc") return a.name.localeCompare(b.name);
-    if (sortOption === "name-desc") return b.name.localeCompare(a.name);
-    if (sortOption === "experience-asc") return expA - expB;
-    if (sortOption === "experience-desc") return expB - expA;
-
-    return 0;
-  });
+  if (loading) {
+    return (
+      <div className="page instructor-list-page">
+        <h1>Meet Our Elite Instructors</h1>
+        <p>Loading instructors...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="page instructor-list-page">
@@ -47,34 +125,53 @@ function InstructorListPage() {
         to view their complete profile, stats, and background.
       </p>
 
+      {isAdmin && (
+        <Link to="/instructors/create" className="create-instructor-button">
+          + Add Instructor
+        </Link>
+      )}
+
       {error && <p className="error-message">{error}</p>}
 
-      <div className="toolbar">
-        <input
-          type="text"
-          placeholder="Search instructor by name..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      {successMessage && (
+        <p className="success-message">{successMessage}</p>
+      )}
 
-        <select
-          value={sortOption}
-          onChange={(event) => setSortOption(event.target.value)}
-        >
-          <option value="name-asc">Name A-Z</option>
-          <option value="name-desc">Name Z-A</option>
-          <option value="experience-asc">Experience Low to High</option>
-          <option value="experience-desc">Experience High to Low</option>
-        </select>
+      <SearchBox
+        searchTerm={searchTerm}
+        onSearchChange={handleSearchChange}
+        resultCount={filteredInstructors.length}
+        totalCount={instructors.length}
+      />
 
-        <button onClick={() => setSearchTerm("")}>Clear</button>
+      {instructors.length === 0 && !error && (
+        <p>No instructors found.</p>
+      )}
+
+      {instructors.length > 0 && filteredInstructors.length === 0 && (
+        <p>No instructors match your search.</p>
+      )}
+
+      <div className="instructor-grid">
+        {paginatedInstructors.map((instructor) => (
+          <InstructorCard
+            key={instructor.id}
+            instructor={instructor}
+            isAdmin={isAdmin}
+            onDelete={handleDeleteInstructor}
+          />
+        ))}
       </div>
 
-      <p className="summary">
-        Showing {sortedInstructors.length} of {instructors.length} instructors
-      </p>
-
-      <InstructorList instructors={sortedInstructors} />
+      {filteredInstructors.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={handlePageSizeChange}
+        />
+      )}
     </div>
   );
 }

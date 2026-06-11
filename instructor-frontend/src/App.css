@@ -770,3 +770,157 @@ body {
 .logout-button:hover {
   background: #bb2d3b;
 }
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  align-items: center;
+}
+
+.card-actions a {
+  text-decoration: none;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.card-actions a:hover {
+  text-decoration: underline;
+}
+
+.delete-button {
+  background-color: #130c74;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #b91c1c;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search-box input {
+  min-width: 320px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.pagination button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pagination button:hover {
+  background-color: #1d4ed8;
+}
+
+.pagination button:disabled {
+  background-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.pagination select {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background-color: white;
+  cursor: pointer;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+.search-box input {
+  width: 360px;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.search-box button {
+  background-color: #64748b;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.search-box button:hover {
+  background-color: #475569;
+}
+
+.search-box .summary {
+  margin: 0;
+  font-weight: 600;
+  color: #334155;
+}
+.create-instructor-button {
+  display: inline-block;
+  margin: 16px 0;
+  background-color: #2563eb;
+  color: white;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.create-instructor-button:hover {
+  background-color: #1d4ed8;
+}
