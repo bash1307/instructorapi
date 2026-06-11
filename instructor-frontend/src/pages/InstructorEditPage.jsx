@@ -13,8 +13,8 @@ function InstructorEditPage() {
   const [instructor, setInstructor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     async function loadInstructor() {
@@ -23,14 +23,7 @@ function InstructorEditPage() {
         setErrorMessage("");
 
         const data = await getInstructorById(id);
-
-        console.log("Instructor by ID:", data);
-
-        if (data && data.id) {
-          setInstructor(data);
-        } else {
-          setErrorMessage("Instructor not found");
-        }
+        setInstructor(data);
       } catch (error) {
         console.error(error);
         setErrorMessage("Instructor not found");
@@ -42,13 +35,13 @@ function InstructorEditPage() {
     loadInstructor();
   }, [id]);
 
-  async function handleUpdateInstructor(formData) {
+  async function handleUpdateInstructor(instructorData) {
     try {
       setSaving(true);
-      setErrorMessage("");
       setSuccessMessage("");
+      setErrorMessage("");
 
-      await updateInstructor(id, formData);
+      await updateInstructor(id, instructorData);
 
       setSuccessMessage("Instructor updated successfully");
 
@@ -66,7 +59,7 @@ function InstructorEditPage() {
   if (loading) {
     return (
       <div className="page">
-        <h1>Edit Instructor Page</h1>
+        <h1>Edit Instructor</h1>
         <p>Loading instructor...</p>
       </div>
     );
@@ -75,17 +68,15 @@ function InstructorEditPage() {
   if (!instructor) {
     return (
       <div className="page">
-        <h1>Edit Instructor Page</h1>
-        <p className="error-message">
-          {errorMessage || "Instructor not found"}
-        </p>
+        <h1>Edit Instructor</h1>
+        <p className="error-message">{errorMessage}</p>
       </div>
     );
   }
 
   return (
     <div className="page">
-      <h1>Edit Instructor Page</h1>
+      <h1>Edit Instructor</h1>
 
       {successMessage && <p className="success-message">{successMessage}</p>}
       {errorMessage && <p className="error-message">{errorMessage}</p>}

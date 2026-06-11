@@ -4,18 +4,17 @@ import InstructorForm from "../components/InstructorForm";
 import { createInstructor } from "../services/instructorApi";
 
 function InstructorCreatePage() {
+  const navigate = useNavigate();
+
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-
   async function handleCreateInstructor(instructorData) {
-    setSuccessMessage("");
-    setErrorMessage("");
-
     try {
       setLoading(true);
+      setSuccessMessage("");
+      setErrorMessage("");
 
       await createInstructor(instructorData);
 
@@ -25,6 +24,7 @@ function InstructorCreatePage() {
         navigate("/instructors");
       }, 1000);
     } catch (error) {
+      console.error(error);
       setErrorMessage("Failed to create instructor");
     } finally {
       setLoading(false);
