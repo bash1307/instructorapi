@@ -10,6 +10,8 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/HomePage";
 import Instructors from "./pages/InstructorListPage";
 import InstructorDetailPage from "./pages/InstructorDetailPage";
+import InstructorCreatePage from "./pages/InstructorCreatePage";
+import InstructorEditPage from "./pages/InstructorEditPage";
 import Dashboard from "./pages/DashboardPage";
 import Login from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -29,6 +31,22 @@ const router = createBrowserRouter([
       {
         path: "instructors",
         element: <Instructors />,
+      },
+      {
+        path: "instructors/create",
+        element: (
+          <ProtectedRoute adminOnly={true}>
+            <InstructorCreatePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "instructors/:id/edit",
+        element: (
+          <ProtectedRoute adminOnly={true}>
+            <InstructorEditPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "instructors/:id",

@@ -1,73 +1,69 @@
-import React from "react";
-import { useParams, Link } from "react-router-dom";
-import { mockInstructors } from "../data/instructors";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getInstructorById } from "../services/instructorApi";
 
 function InstructorDetailPage() {
   const { id } = useParams();
-  const instructor = mockInstructors.find((inst) => inst.id === id);
 
-  if (!instructor) {
+  const [instructor, setInstructor] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    async function loadInstructor() {
+      try {
+        setLoading(true);
+        setErrorMessage("");
+
+        const data = await getInstructorById(id);
+        setInstructor(data);
+      } catch (error) {
+        console.error(error);
+        setErrorMessage("Instructor not found");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadInstructor();
+  }, [id]);
+
+  if (loading) {
     return (
-      <div className="page detail-page error-page">
-        <h2>Instructor Not Found</h2>
-        <p className="description">The instructor profile you are trying to view does not exist.</p>
-        <Link to="/instructors" className="cta-button">
-          Back to List
-        </Link>
+      <div className="page">
+        <p>Loading instructor details...</p>
       </div>
     );
   }
 
+  if (!instructor) {
+    return (
+      <div className="page">
+        <p className="error-message">{errorMessage}</p>
+        <Link to="/instructors">Back to Instructors</Link>
+      </div>
+    );
+  }
+
+  const experience =
+    instructor.yearsExperience ?? instructor.yearsOfExperience ?? 0;
+
   return (
-    <div className="page detail-page">
-      <div className="back-nav">
-        <Link to="/instructors" className="back-link">
-          ← Back to Instructors
-        </Link>
+    <div className="page">
+      <h1>{instructor.name}</h1>
+
+      <div className="card">
+        <p>Email: {instructor.email}</p>
+        <p>Specialization: {instructor.specialization}</p>
+        <p>Status: {instructor.status}</p>
+        <p>Experience: {experience} years</p>
       </div>
 
-      <div className="profile-container">
-        <div className="profile-header">
-          <img
-            src={instructor.avatar}
-            alt={instructor.name}
-            className="profile-avatar"
-          />
-          <div className="profile-header-text">
-            <h1>{instructor.name}</h1>
-            <p className="profile-title">{instructor.specialization} Expert</p>
-            <span className={`status-badge ${instructor.status.toLowerCase()}`}>
-              {instructor.status}
-            </span>
-          </div>
-        </div>
+      <br />
 
-        <div className="profile-body">
-          <div className="profile-section">
-            <h3>Biography</h3>
-            <p>{instructor.bio}</p>
-          </div>
-
-          <div className="profile-grid">
-            <div className="profile-stat-card">
-              <span className="stat-label">Experience</span>
-              <span className="stat-value">{instructor.yearsOfExperience} Years</span>
-            </div>
-            <div className="profile-stat-card">
-              <span className="stat-label">Rating</span>
-              <span className="stat-value">⭐ {instructor.rating} / 5.0</span>
-            </div>
-            <div className="profile-stat-card">
-              <span className="stat-label">Active Students</span>
-              <span className="stat-value">{instructor.students.toLocaleString()}</span>
-            </div>
-            <div className="profile-stat-card">
-              <span className="stat-label">Email</span>
-              <span className="stat-value email">{instructor.email}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Link to="/instructors">Back to Instructors</Link>
+      {" | "}
+      <Link to={`/instructors/${instructor.id}/edit`}>Edit</Link>
     </div>
   );
 }

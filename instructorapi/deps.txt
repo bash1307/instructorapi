@@ -1,0 +1,8 @@
+The following files have been resolved:
+   org.springframework.boot:spring-boot-starter-validation:jar:4.0.6:compile[36m -- module spring.boot.starter.validation[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter-webmvc:jar:4.0.6:compile[36m -- module spring.boot.starter.webmvc[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter-data-mongodb:jar:4.0.6:compile[36m -- module spring.boot.starter.data.mongodb[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter-security:jar:4.0.6:compile[36m -- module spring.boot.starter.security[0;1m [auto][m
+   io.jsonwebtoken:jjwt-api:jar:0.13.0:compile[36m -- module jjwt.api[0;1;33m (auto)[m
+   org.projectlombok:lombok:jar:1.18.46:compile (optional)[36m -- module lombok[m
+
