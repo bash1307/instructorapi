@@ -17,6 +17,8 @@ function InstructorForm({
     active: true,
   });
 
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     if (initialData) {
       setFormData({
@@ -38,8 +40,27 @@ function InstructorForm({
     });
   }
 
+  function validateForm() {
+    const newErrors = {};
+
+    if (!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.email.trim()) newErrors.email = "Email is required";
+    if (!formData.specialization.trim()) newErrors.specialization = "Specialization is required";
+    if (!formData.yearsExperience.toString().trim()) newErrors.yearsExperience = "Years experience is required";
+
+    return newErrors;
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
+
     onSubmit(formData);
   }
 
@@ -48,59 +69,34 @@ function InstructorForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="instructor-form">
+    <form onSubmit={handleSubmit} className="instructor-form" noValidate>
       <div className="form-group">
         <label>Name</label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
+        <input type="text" name="name" value={formData.name} onChange={handleChange} />
+        {errors.name && <p>{errors.name}</p>}
       </div>
 
       <div className="form-group">
         <label>Email</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
+        <input type="email" name="email" value={formData.email} onChange={handleChange} />
+        {errors.email && <p>{errors.email}</p>}
       </div>
 
       <div className="form-group">
         <label>Specialization</label>
-        <input
-          type="text"
-          name="specialization"
-          value={formData.specialization}
-          onChange={handleChange}
-          required
-        />
+        <input type="text" name="specialization" value={formData.specialization} onChange={handleChange} />
+        {errors.specialization && <p>{errors.specialization}</p>}
       </div>
 
       <div className="form-group">
         <label>Years Experience</label>
-        <input
-          type="number"
-          name="yearsExperience"
-          value={formData.yearsExperience}
-          onChange={handleChange}
-          required
-        />
+        <input type="number" name="yearsExperience" value={formData.yearsExperience} onChange={handleChange} />
+        {errors.yearsExperience && <p>{errors.yearsExperience}</p>}
       </div>
 
       <div className="form-group">
         <label>
-          <input
-            type="checkbox"
-            name="active"
-            checked={formData.active}
-            onChange={handleChange}
-          />
+          <input type="checkbox" name="active" checked={formData.active} onChange={handleChange} />
           Active
         </label>
       </div>
